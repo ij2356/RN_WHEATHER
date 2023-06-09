@@ -14,8 +14,9 @@ export default function App() {
     if (!granted) {
       setOk(false);
     }
-    const location = await Location.getCurrentPositionAsync({ accuracy: 5 })
-    console.log(location)
+    const { coords : {latitude, longitude}} = await Location.getCurrentPositionAsync({ accuracy: 5 })
+    const location = await Location.reverseGeocodeAsync({ latitude, longitude });
+    
   }
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.city}>
-        <Text style={styles.cityName}>Seoul</Text>
+        <Text style={styles.cityName}>SEUOL</Text>
       </View>
       <ScrollView horizontal pagingEnabled style={styles.wheater}>
         <View style={styles.day}>
