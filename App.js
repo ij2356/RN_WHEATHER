@@ -10,23 +10,24 @@ export default function App() {
   const [ok, setOk] = useState(true);
 
   const ask = async () => {
-    const {granted} = await Location.requestForegroundPermissionsAsync(); 
+    const { granted } = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
       setOk(false);
     }
-    const location = await Location.getCurrentPositionAsync({ accuracy: 5 })
-    console.log(location)
-  }
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    const location = await Location.reverseGeocodeAsync({ latitude, longitude });
+  };
 
   useEffect(() => {
     ask();
   }, []);
 
-  
   return (
     <View style={styles.container}>
       <View style={styles.city}>
-        <Text style={styles.cityName}>Seoul</Text>
+        <Text style={styles.cityName}>SEUOL</Text>
       </View>
       <ScrollView horizontal pagingEnabled style={styles.wheater}>
         <View style={styles.day}>
@@ -61,12 +62,12 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   wheater: {
-    flex:3,
+    flex: 3,
   },
   day: {
     width: WIDTH,
-    marginTop:20,
-    alignItems: 'center',
+    marginTop: 20,
+    alignItems: "center",
   },
   temp: {
     fontSize: 178,
