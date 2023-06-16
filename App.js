@@ -10,20 +10,27 @@ export default function App() {
   const [ok, setOk] = useState(true);
 
   const ask = async () => {
-    const {granted} = await Location.requestForegroundPermissionsAsync(); 
+    const { granted } = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
       setOk(false);
     }
+<<<<<<< HEAD
     const { coords : {latitude, longitude}} = await Location.getCurrentPositionAsync({ accuracy: 5 })
     const location = await Location.reverseGeocodeAsync({ latitude, longitude });
     
   }
+=======
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    const location = await Location.reverseGeocodeAsync({ latitude, longitude });
+  };
+>>>>>>> dadf8be508257b4596b73d19402d82aa0484e12a
 
   useEffect(() => {
     ask();
   }, []);
 
-  
   return (
     <View style={styles.container}>
       <View style={styles.city}>
@@ -62,12 +69,12 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   wheater: {
-    flex:3,
+    flex: 3,
   },
   day: {
     width: WIDTH,
-    marginTop:20,
-    alignItems: 'center',
+    marginTop: 20,
+    alignItems: "center",
   },
   temp: {
     fontSize: 178,
