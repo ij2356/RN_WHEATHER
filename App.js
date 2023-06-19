@@ -2,9 +2,19 @@ import * as Location from "expo-location";
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, StyleSheet, Text, View, Dimensions, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
+import { Fontisto } from "@expo/vector-icons";
 
 const WIDTH = Dimensions.get("window").width;
 
+const icons = {
+  Clouds: "cloudy",
+  Clear: "day-sunny",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snow",
+  Rain: "rains",
+  Drizzle: "rain",
+  Thunderstorm: "lightning",
+};
 export default function App() {
   const [days, setDays] = useState([]);
   const [city, setCity] = useState(["Loading", ""]);
@@ -53,6 +63,7 @@ export default function App() {
   };
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" />
       <View style={styles.city}>
         <Text style={styles.cityName}>
           {city[0]}
@@ -68,20 +79,21 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
-              <Text style={styles.tinyText1}>
-                {DatetypeChange(day.dt_txt)}
-              </Text>
-              <Text style={styles.temp}>
-                {parseFloat(day.main.temp).toFixed(1)}
-                <Text style={styles.tinyText3}>°C</Text>
-              </Text>
-              <Text style={styles.description}>{day.weather[0].main}</Text>
+              <Text style={styles.tinyText1}>{DatetypeChange(day.dt_txt)}</Text>
+              <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",width:WIDTH,paddingRight:20,paddingLeft:20}}>
+                <Text style={styles.temp}>
+                  {parseFloat(day.main.temp).toFixed(1)}
+                  <Text style={styles.tinyText3}>°C</Text>
+                </Text>
+                <Text style={styles.description}>
+                  <Fontisto name={icons[day.weather[0].main]} size={68} color="black" />
+                </Text>
+              </View>
               <Text style={styles.tinyText2}>{day.weather[0].description}</Text>
             </View>
           ))
         )}
       </ScrollView>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -112,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   temp: {
-    fontSize: 120,
+    fontSize: 80,
   },
   description: {
     fontSize: 80,
