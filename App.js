@@ -1,40 +1,50 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState} from "react";
-import { StyleSheet, Text,TextInput, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, Pressable } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, Pressable } from "react-native";
 import { theme } from "./colors";
 
 export default function App() {
   const [work, setWork] = useState(true);
-  const [text, setText] = useState(""); 
-  
-  const changeText = (event) => {
-    setText(event)
-  }
+  const [text, setText] = useState("");
+  const [toDos, setToDos] = useState({});
+  const changeText = (payload) => {
+    setText(payload);
+  };
   const working = () => {
     setWork(true);
-  }
+  };
   const travel = () => {
     setWork(false);
-  }
+  };
+
+  const addTodo = () => {
+    if (text === "") {
+      alert("빈값입니다.");
+      return;
+    }
+    else {
+      const newToDos = Object.assign({}, toDos, {
+        [Date.now()]: { text, work: working },
+      });
+      setToDos(newToDos);
+      setText("");
+      console.log(toDos);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.header}>
         <TouchableOpacity onPress={working}>
           <Text style={{ ...styles.btnText, color: work ? "#fff" : theme.grey }}>Work</Text>
-        </TouchableOpacity >
+        </TouchableOpacity>
         <TouchableOpacity onPress={travel}>
           <Text style={{ ...styles.btnText, color: !work ? "#fff" : theme.grey }}>Travel</Text>
         </TouchableOpacity>
       </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder={work ? "어떤일을 하실건가요?" : "여행을 떠나실 장소는?"}
-        value={text}
-        onChangeText={changeText}
-      />
-        
+      <TextInput onSubmitEditing={addTodo} returnKeyType="done" style={styles.input} placeholder={work ? "어떤일을 하실건가요?" : "여행을 떠나실 장소는?"} value={text} onChangeText={changeText} />
     </View>
   );
 }
@@ -59,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 40,
     paddingHorizontal: 20,
-    paddingVertical: 20, 
-    backgroundColor : "#fff"
-  }
+    paddingVertical: 20,
+    backgroundColor: "#fff",
+  },
 });
